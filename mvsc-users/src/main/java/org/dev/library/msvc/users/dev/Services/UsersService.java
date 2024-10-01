@@ -7,16 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceUsersRepository implements UsersRepositoryCustom {
+public class UsersService implements UsersRepositoryCustom {
 
     private final UsersRepository usersRepository;
     @Autowired
-    public ServiceUsersRepository(UsersRepository usersRepository) {
+    public UsersService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
 
@@ -41,16 +40,21 @@ public class ServiceUsersRepository implements UsersRepositoryCustom {
     @Override
     @Transactional()
     public UsersModel UpdateUser(UsersModel usuario) {
-        UsersModel existingUser = usersRepository.findById(usuario.getId()).orElseThrow();
-        existingUser.setFirstname(usuario.getFirstname());
-        existingUser.setLastname(usuario.getLastname());
-        existingUser.setEmail(usuario.getEmail());
-        return usersRepository.save(existingUser);
+        UsersModel existingUser  = usersRepository.findById(usuario.getId()).orElseThrow();
+        existingUser .setFirstname(usuario.getFirstname());
+        existingUser .setLastname(usuario.getLastname());
+        existingUser .setEmail(usuario.getEmail());
+        existingUser .setUsername(usuario.getUsername());
+        existingUser .setPhoneNumber(usuario.getPhoneNumber());
+        existingUser .setAddress(usuario.getAddress());
+        existingUser .setPassword(usuario.getPassword());
+        existingUser .setBirth(usuario.getBirth());
+        return usersRepository.save(existingUser );
     }
 
     @Override
     @Transactional()
     public void DeleteUser(Long id) {
-    usersRepository.deleteById(id);
+        usersRepository.deleteById(id);
     }
 }
