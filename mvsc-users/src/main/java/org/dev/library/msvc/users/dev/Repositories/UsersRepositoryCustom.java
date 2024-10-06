@@ -1,5 +1,6 @@
 package org.dev.library.msvc.users.dev.Repositories;
 
+import org.dev.library.msvc.users.dev.Models.UserResponse;
 import org.dev.library.msvc.users.dev.Models.UsersModel;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ public interface UsersRepositoryCustom {
 
     UsersModel SaveUser(UsersModel usuario);
 
-    UsersModel UpdateUser(UsersModel usuario);
+    UsersModel UpdateUser(Long id, UsersModel usuario);
 
-    void DeleteUser(Long id);
+    UserResponse DeleteByUser(Long id);
 }

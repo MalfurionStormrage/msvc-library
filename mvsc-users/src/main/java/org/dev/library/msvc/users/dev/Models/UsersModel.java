@@ -1,16 +1,19 @@
 package org.dev.library.msvc.users.dev.Models;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "Users")
-@Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class UsersModel {
 
     @Id
+    @Column(name = "Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -29,8 +32,8 @@ public class UsersModel {
     @Column(name = "Username", unique = true)
     private String username;
 
-    @Column(name = "PhoneNumber")
-    private String phoneNumber;
+    @Column(name = "Phonenumber")
+    private String phonenumber;
 
     @Column(name = "Address")
     private String address;
