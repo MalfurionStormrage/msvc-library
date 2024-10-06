@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
-public class GlobalException {
+public class GlobalException extends RuntimeException {
 
     /*Manejo de exceptions globales*/
     @ExceptionHandler(Exception.class)
@@ -16,8 +16,7 @@ public class GlobalException {
         UsersErros usersErros = new UsersErros(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 ex.getMessage(),
-                resquest.getDescription(false)
-        );
-        return new ResponseEntity<UsersErros>(usersErros, HttpStatus.INTERNAL_SERVER_ERROR);
+                resquest.getDescription(false));
+        return new ResponseEntity<>(usersErros, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
