@@ -3,6 +3,7 @@ package org.dev.library.msvc.users.dev.Controllers;
 import org.dev.library.msvc.users.dev.Models.UsersModel;
 import org.dev.library.msvc.users.dev.Services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,21 +31,30 @@ public class UsersController {
         if (usersModel.isPresent()) {
             return ResponseEntity.ok().body(usersModel);
         }
-        return ResponseEntity.ok().body("User  not found with id " + id);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User  not found with id " + id);
     }
 
     @PostMapping()
     public ResponseEntity<Object> SaveUser(@RequestBody UsersModel usersModel) {
-        return ResponseEntity.ok().body(usersService.SaveUser(usersModel));
+        if (usersService.SaveUser(usersModel)) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully.");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The user created with id: " + usersModel.getCreatedBy().getId() + " does not exist.");
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> UpdateUser(@PathVariable Long id, @RequestBody UsersModel usersModel) {
-        return ResponseEntity.ok().body(usersService.UpdateUser(id, usersModel));
+        if (usersService.UpdateUser(id, usersModel)) {
+            return ResponseEntity.ok().body("User updated successfully.");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with id: " + id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> DeleteUser(@PathVariable Long id) {
-        return ResponseEntity.ok().body(usersService.DeleteByUser(id));
+        if (usersService.DeleteByUser(id)) {
+            return ResponseEntity.ok().body("User delete successfully.");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with id: " + id);
     }
 }

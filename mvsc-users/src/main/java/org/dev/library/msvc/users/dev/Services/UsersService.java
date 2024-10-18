@@ -1,7 +1,5 @@
 package org.dev.library.msvc.users.dev.Services;
 
-import org.dev.library.msvc.users.dev.Exceptions.NotFoundException;
-import org.dev.library.msvc.users.dev.Models.UserResponse;
 import org.dev.library.msvc.users.dev.Models.UsersModel;
 import org.dev.library.msvc.users.dev.Repositories.UsersRepository;
 import org.dev.library.msvc.users.dev.Repositories.UsersRepositoryCustom;
@@ -36,13 +34,18 @@ public class UsersService implements UsersRepositoryCustom {
 
     @Override
     @Transactional()
-    public UsersModel SaveUser(UsersModel usersmodel) {
-        return usersRepository.save(usersmodel);
+    public boolean SaveUser(UsersModel usersmodel) {
+        Optional<UsersModel> createdByUser = usersRepository.findById(usersmodel.getCreatedBy().getId());
+        if (createdByUser.isPresent()) {
+            usersRepository.save(usersmodel);
+            return true;
+        }
+        return false;
     }
 
     @Override
     @Transactional()
-    public UsersModel UpdateUser(Long id, UsersModel usuario) {
+    public boolean UpdateUser(Long id, UsersModel usuario) {
         Optional<UsersModel> existingUser = usersRepository.findById(id);
         if (existingUser.isPresent()) {
             UsersModel existingUserModel = existingUser.get();
@@ -54,20 +57,21 @@ public class UsersService implements UsersRepositoryCustom {
             existingUserModel.setAddress(usuario.getAddress());
             existingUserModel.setPassword(usuario.getPassword());
             existingUserModel.setBirth(usuario.getBirth());
-            return usersRepository.save(existingUserModel);
+            existingUserModel.setUpdatedBy(usuario.getUpdatedBy());
+            usersRepository.save(existingUserModel);
+            return true;
         }
-        throw new NotFoundException("User not found with id: " + id);
+        return false;
     }
 
     @Override
     @Transactional()
-    public UserResponse DeleteByUser(Long id) {
+    public boolean DeleteByUser(Long id) {
         Optional<UsersModel> optionalUser = usersRepository.findById(id);
         if (optionalUser.isPresent()) {
             usersRepository.deleteById(id);
-            return new UserResponse("User deleted successfully.", true);
-        } else {
-            throw new NotFoundException("User not found with id: " + id);
+            return true;
         }
+        return false;
     }
 }

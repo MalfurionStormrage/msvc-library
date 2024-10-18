@@ -3,14 +3,22 @@ package org.dev.library.msvc.users.dev.Models;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
 @Data
 @Entity
+@Builder
 @Table(name = "Users")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsersModel {
 
     @Id
@@ -27,10 +35,10 @@ public class UsersModel {
     @Column(name = "Birth")
     private Date birth;
 
-    @Column(name = "Email", unique = true)
+    @Column(name = "Email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "Username", unique = true)
+    @Column(name = "Username", unique = true, nullable = false)
     private String username;
 
     @Column(name = "Phonenumber")
@@ -39,21 +47,22 @@ public class UsersModel {
     @Column(name = "Address")
     private String address;
 
-    @Column(name = "Password")
+    @Column(name = "Password", nullable = false)
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "Created_by")
+    @JoinColumn(name = "Created_by", updatable = false)
     private UsersModel createdBy;
 
-    @Column(name = "Created_at")
+    @CreationTimestamp
+    @Column(name = "Created_at", updatable = false)
     private Date createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "Updated_by")
+    @JoinColumn(name = "Updated_by", insertable = false)
     private UsersModel updatedBy;
 
-    @Column(name = "Updated_at")
+    @UpdateTimestamp
+    @Column(name = "Updated_at", insertable = false)
     private Date updatedAt;
-
 }
