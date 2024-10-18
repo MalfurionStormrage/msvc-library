@@ -12,12 +12,18 @@
         <outputRelativeToContentRoot value="true" />
         <module name="dev" />
         <module name="msvc-users" />
+        <module name="msvc-books" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="msvc-library (1) (org.dev.library.msvc.books)" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="dev" options="-parameters" />
+      <module name="msvc-books" options="-parameters" />
+      <module name="msvc-library (1) (org.dev.library.msvc.books)" options="-parameters" />
       <module name="msvc-users" options="-parameters" />
     </option>
   </component>

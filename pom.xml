@@ -19,6 +19,7 @@
 
     <modules>
         <module>mvsc-users</module>
+        <module>msvc-books</module>
     </modules>
 
     <properties>
